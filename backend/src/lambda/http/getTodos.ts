@@ -19,19 +19,23 @@ export const handler = middy(
 
     try {
       items = await getAllTodosByUserId(userId)
+      logger.info('GetTodos: Fetching todos successfully returned:', { items })
+
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          items: items
+        })
+      }
     } catch (error) {
+      logger.error('GetTodos: Failure:', { error })
+
       return {
         statusCode: 500,
         body: JSON.stringify({
           error: error
         })
       }
-    }
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        items: items
-      })
     }
   }
 )
