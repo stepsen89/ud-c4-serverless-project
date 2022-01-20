@@ -50,6 +50,7 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
+          reqValidatorName: RequestBodyValidator
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -64,6 +65,7 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
+          reqValidatorName: RequestBodyValidator
           request:
             schemas:
               application/json: ${file(models/create-todo-model.json)}
@@ -84,6 +86,7 @@ functions:
           path: todos/{todoId}
           authorizer: Auth
           cors: true
+          reqValidatorName: RequestBodyValidator
           request:
             schemas:
               application/json: ${file(models/update-todo-model.json)}
@@ -104,6 +107,7 @@ functions:
           path: todos/{todoId}
           authorizer: Auth
           cors: true
+          reqValidatorName: RequestBodyValidator
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -124,6 +128,7 @@ functions:
           path: todos/{todoId}/attachment
           authorizer: Auth
           cors: true
+          reqValidatorName: RequestBodyValidator
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -137,9 +142,6 @@ functions:
 
 resources:
   Resources:
-    # Add necessary AWS resources. You will need at least the following AWS resources
-    # DONE: Fill the properties
-    # Feel free to change the names as you like.
     GatewayResponseDefault4XX:
       Type: AWS::ApiGateway::GatewayResponse
       Properties:
@@ -160,7 +162,6 @@ resources:
         ValidateRequestBody: true
         ValidateRequestParameters: false
 
-    # TODO: Create a DynamoDB table with local secondary index and a composite key
     TodosTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -188,7 +189,6 @@ resources:
             Projection:
               ProjectionType: ALL
 
-    # DONE: Complete the bucket properties below.
     AttachmentsBucket:
       Type: AWS::S3::Bucket
       Properties:
@@ -207,7 +207,6 @@ resources:
                 - HEAD
               MaxAge: 3000
 
-    # DONE: Complete the policy below and attach it to the bucket defined above
     BucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:

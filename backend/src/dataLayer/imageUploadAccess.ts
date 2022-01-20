@@ -14,12 +14,8 @@ export class ImageUploadAccess {
     private readonly expirationTime = Number(process.env.SIGNED_URL_EXPIRATION)
   ) {}
 
-  async getAttachementUrl(
-    // userId: string,
-    // todoId: string,
-    imageId: string
-  ): Promise<any> {
-    logger.info('DataLayer: Get Attachement Url')
+  async getAttachmentUrl(imageId: string): Promise<any> {
+    logger.info('DataLayer: Get Attachment Url')
 
     const result = this.s3Client.getSignedUrl('putObject', {
       Bucket: this.bucket,
@@ -27,7 +23,7 @@ export class ImageUploadAccess {
       Expires: this.expirationTime
     })
 
-    console.log(result)
+    logger.info('DataLayer: Get Attachment Url result', { result })
 
     return result
   }

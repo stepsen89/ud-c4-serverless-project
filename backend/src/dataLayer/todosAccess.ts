@@ -77,13 +77,13 @@ export class TodoAccess {
     return result
   }
 
-  async updateTodoAttachementUrl(
+  async updateTodoAttachmentUrl(
     todoId: string,
     userId: string
   ): Promise<TodoItem> {
     logger.info('DataLayer: update todo with attachment url', { todoId })
 
-    const todoAttachementUrl = `https://${this.bucket}.s3.amazonaws.com/${todoId}`
+    const todoAttachmentUrl = `https://${this.bucket}.s3.amazonaws.com/${todoId}`
 
     const params = {
       TableName: this.todosTable,
@@ -95,7 +95,7 @@ export class TodoAccess {
         '#todo_attachmentUrl': 'attachmentUrl'
       },
       ExpressionAttributeValues: {
-        ':attachmentUrl': todoAttachementUrl
+        ':attachmentUrl': todoAttachmentUrl
       },
       UpdateExpression: 'SET #todo_attachmentUrl = :attachmentUrl',
       ReturnValues: 'ALL_NEW'

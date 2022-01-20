@@ -8,17 +8,19 @@ const logger = createLogger('todosBusinessLogic')
 const imageUploadAccess = new ImageUploadAccess()
 const todosAccess = new TodoAccess()
 
-export async function getAttachementUrl(
+export async function getAttachmentUrl(
   todoId: string,
   userId: string
 ): Promise<string> {
-  logger.info('Business Logic: Get Attachement Url')
+  logger.info('Business Logic: Get Attachment Url')
 
-  const attachementUrl = await imageUploadAccess.getAttachementUrl(todoId)
+  const attachmentUrl = await imageUploadAccess.getAttachmentUrl(todoId)
 
-  await todosAccess.updateTodoAttachementUrl(todoId, userId)
+  await todosAccess.updateTodoAttachmentUrl(todoId, userId)
 
-  console.log(attachementUrl)
+  logger.info('Business Logic: Get Attachment Url url result', {
+    attachmentUrl
+  })
 
-  return attachementUrl
+  return attachmentUrl
 }
