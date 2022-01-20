@@ -6,7 +6,6 @@ service:
 plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
-  - serverless-plugin-tracing
 
 provider:
   name: aws
