@@ -2,6 +2,7 @@ import * as AWS from 'aws-sdk'
 const AWSXRay = require('aws-xray-sdk')
 
 import { TodoItem } from '../models/TodoItem'
+import { TodoUpdate } from '../models/TodoUpdate'
 // import { createLogger } from '../utils/logger'
 
 const XAWS = AWSXRay.captureAWS(AWS)
@@ -42,6 +43,44 @@ export class TodoAccess {
       .promise()
 
     return item
+  }
+
+  async updateTodo(item: TodoUpdate, userId: string): Promise<TodoUpdate> {
+    const params = {
+      TableName: this.todosTable,
+      Key: {
+        userId: userId,
+        todoId: item.todoId
+      },
+      ExpressionAttributeNames: {
+        '#todo_name': 'name'
+      },
+      ExpressionAttributeValues: {
+        ':name': item.name,
+        ':dueDate': item.dueDate,
+        ':done': item.done
+      },
+      UpdateExpression:
+        'SET #todo_name = :name, dueDate = :dueDate, done = :done',
+      ReturnValues: 'ALL_NEW'
+    }
+
+    console.log('Updating the item...')
+    const result = await this.docClient.update(params).promise()
+    console.log('Result after update: ', result)
+    return result
+  }
+
+  async deleteTodo(todoId: string, userId: string): Promise<any> {
+    var params = {
+      TableName: this.todosTable,
+      Key: {
+        todoId: todoId,
+        userId: userId
+      }
+    }
+    console.log('Deleting the item...')
+    return await this.docClient.delete(params).promise()
   }
 }
 
