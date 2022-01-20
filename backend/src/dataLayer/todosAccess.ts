@@ -3,11 +3,11 @@ const AWSXRay = require('aws-xray-sdk')
 
 import { TodoItem } from '../models/TodoItem'
 import { TodoUpdate } from '../models/TodoUpdate'
-// import { createLogger } from '../utils/logger'
+import { createLogger } from '../utils/logger'
 
 const XAWS = AWSXRay.captureAWS(AWS)
 
-// const logger = createLogger('TodosAccess')
+const logger = createLogger('TodosAccess')
 
 export class TodoAccess {
   constructor(
@@ -16,9 +16,8 @@ export class TodoAccess {
   ) {}
 
   async getAllTodosByUserId(userId: string): Promise<TodoItem[]> {
-    console.log('Getting all todos for user with id ', userId)
-    console.log('docClient', this.docClient)
-    console.log('todosTable :', this.todosTable)
+    logger.info('DataLayer: Get All Todos By User id')
+
     const result = await this.docClient
       .query({
         TableName: this.todosTable,
@@ -71,7 +70,7 @@ export class TodoAccess {
     return result
   }
 
-  async deleteTodo(todoId: string, userId: string): Promise<any> {
+  async deleteTodo(todoId: string, userId: string) {
     var params = {
       TableName: this.todosTable,
       Key: {
